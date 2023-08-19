@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.shanjupay.transaction.mapper.PayOrderMapper">
+
+    <select id="getDealCollect" resultType="com.shanjupay.transaction.api.vo.DealVo">
+        select (select sum(if(CHANNEL = 'ALIPAY_WAP', TOTAL_AMOUNT, TOTAL_AMOUNT * 100))
+                from shanjupay_transaction.pay_order
+                where MERCHANT_ID = #{merchantId}
+                  and CREATE_TIME between #{startTime} and #{endTime}) as totalAmount,
+               (select count(1)
+                from shanjupay_transaction.pay_order
+                where MERCHANT_ID = #{merchantId}
+                  and CREATE_TIME between #{startTime} and #{endTime}) as requestNumber,
+               sum(if(CHANNEL = 'ALIPAY_WAP', TOTAL_AMOUNT, TOTAL_AMOUNT * 100))                                       as successAmount,
+               count(1)                                                as successNumber,
+               sum(if(CHANNEL = 'ALIPAY_WAP', TOTAL_AMOUNT, TOTAL_AMOUNT * 100)) / count(1)                            as avgAmount
+        from shanjupay_transaction.pay_order
+        where MERCHANT_ID = #{merchantId}
+          and TRADE_STATE = 2
+          and CREATE_TIME between #{startTime} and #{endTime};
+    </select>
+    
+    
+    <select id="getAllDealFromAppType" resultType="com.shanjupay.transaction.api.vo.DealVo">
+        select (select sum(if(CHANNEL = 'ALIPAY_WAP', TOTAL_AMOUNT, TOTAL_AMOUNT * 100))
+                from shanjupay_transaction.pay_order
+                where APP_ID = #{appId}
+                  and CREATE_TIME between #{startTime} and #{endTime})                      as totalAmount,
+               (select count(1)
+                from shanjupay_transaction.pay_order
+                where APP_ID = #{appId}
+                  and CREATE_TIME between #{startTime} and #{endTime})                      as requestNumber,
+               sum(if(CHANNEL = 'ALIPAY_WAP', TOTAL_AMOUNT, TOTAL_AMOUNT * 100))            as successAmount,
+               count(1)                                                                     as successNumber,
+               sum(if(CHANNEL = 'ALIPAY_WAP', TOTAL_AMOUNT, TOTAL_AMOUNT * 100)) / count(1) as avgAmount
+        from shanjupay_transaction.pay_order
+        where APP_ID = #{appId}
+          and TRADE_STATE = 2
+          and CREATE_TIME between #{startTime} and #{endTime};
+    </select>
+
+    <select id="getAllDealFromChannel" resultType="com.shanjupay.transaction.api.vo.DealVo">
+        select (select sum(if(CHANNEL = 'ALIPAY_WAP', TOTAL_AMOUNT, TOTAL_AMOUNT * 100))
+                from shanjupay_transaction.pay_order
+                where APP_ID = #{appId}
+                  and CHANNEL = #{channel}
+                  and CREATE_TIME between #{startTime} and #{endTime})                      as totalAmount,
+               (select count(1)
+                from shanjupay_transaction.pay_order
+                where APP_ID = #{appId}
+                  and CHANNEL = #{channel}
+                  and CREATE_TIME between #{startTime} and #{endTime})                      as requestNumber,
+               sum(if(CHANNEL = 'ALIPAY_WAP', TOTAL_AMOUNT, TOTAL_AMOUNT * 100))            as successAmount,
+               count(1)                                                                     as successNumber,
+               sum(if(CHANNEL = 'ALIPAY_WAP', TOTAL_AMOUNT, TOTAL_AMOUNT * 100)) / count(1) as avgAmount
+        from shanjupay_transaction.pay_order
+        where APP_ID = #{appId}
+          and CHANNEL = #{channel}
+          and TRADE_STATE = 2
+          and CREATE_TIME between #{startTime} and #{endTime};
+    </select>
+</mapper>
