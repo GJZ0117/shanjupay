@@ -20,3 +20,13 @@
 +  前端：vue、typescript
 +  后端：Java、Spring Boot、Spring Cloud Alibaba、MySQL、Redis、RocketMQ、qiniu-CDN
 
+# 项目启动
+## 前端项目启动
++  在命令行中进入 `project-juhezhifu-admin-vue` 目录
++  输入 `export NODE_OPTIONS=--openssl-legacy-provider`
++  编译并运行 `npm run build` 和 `npm run serve`
+## 后端项目启动
++  docker中依次启动 MySQL、Nacos、Redis、RocketMQNameserver、RocketMQBroker
++  在命令行中输入 `docker ps` 查看RocketMQBroker对应的id，然后输入 `docker exec -it 容器id /bin/bash`进入容器内，使用 `vim ../conf/broker.conf` 修改配置中的ip（mac上ip查询方法：命令行 `ifconfig` 找到 eth0中的inet），修改完后保存退出容器并重启RocketMQBroker
++  在Nacos配置管理中的dev下的 `transaction-service.yaml` 支付入口url的ip改为刚查询到的ip
++  IDEA中依次启动 sailing、gateway、user、uaa、transaction、paymentAgent、merchant、merchantApplication
