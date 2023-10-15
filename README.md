@@ -14,7 +14,7 @@
 5. 商户填写支付渠道参数(支付宝、微信、银联等) 
 6. 商户测试支付渠道后上线使用
 7. C端用户在商户消费并进行二维码支付
-8. 商户可通过平台浏览交易数据
+8. B端商户可通过平台浏览交易信息、统计多渠道交易数据
 
 # 主要技术栈
 +  前端：vue、typescript
@@ -30,3 +30,8 @@
 +  在命令行中输入 `docker ps` 查看RocketMQBroker对应的id，然后输入 `docker exec -it 容器id /bin/bash`进入容器内，使用 `vim ../conf/broker.conf` 修改配置中的ip（mac上ip查询方法：命令行 `ifconfig` 找到 eth0中的inet），修改完后保存退出容器并重启RocketMQBroker
 +  在Nacos配置管理中的dev下的 `transaction-service.yaml` 支付入口url的ip改为刚查询到的ip
 +  IDEA中依次启动 sailing、gateway、user、uaa、transaction、paymentAgent、merchant、merchantApplication
+
+# 演示视频
+**点击下面图片即可播放项目演示视频**
+
+[![Watch the video](http://qiniu.gjz0117.top/%E8%81%9A%E5%90%88%E6%94%AF%E4%BB%98%E5%9B%BE%E7%89%87.jpeg)](https://www.bilibili.com/video/BV1xp4y1g7m6/?share_source=copy_web&vd_source=0e1ce6017ad0b65266648dff8d09011f)
